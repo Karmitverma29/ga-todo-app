@@ -1,0 +1,32 @@
+name: React IC,
+
+
+on:
+  push:
+     branches:
+     - "master"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+          strategy:
+          matrix:
+              node-version: [15.x]
+
+  deploy:
+    needs: build
+
+    permissions:
+      pages: write     
+      id-token: write   
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
